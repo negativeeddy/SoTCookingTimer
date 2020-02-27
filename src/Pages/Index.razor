@@ -2,35 +2,41 @@
 @page "/hello"
 
 @using SoTCookingTimer.Shared
-<div class="container">
-    @if (!running)
-    {
-        @foreach (var time in CookTime.CookTimes)
-        {
-            <div class="row">
-                <div class="col-sm">
-                    <button @onclick=@(e => StartTimer(time))>@time.Name</button>
-                </div>
-                <div class="col-sm">
-                    <img src="./images/@time.Image" style="height:50px" />
-                </div>
-            </div>
-        }
-    }
 
+<div class="container" style="display:@buttonDisplayStyle">
     <div class="row">
-        <div class="col-12">
+        <div class="col">Please select the type of food you wish to cook</div>
+    </div>
+    <div class="row">
+        <table style="margin:15px;">
+            @foreach (var time in CookTime.CookTimes)
+            {
+                <tr>
+                    <td>
+                        <button @onclick=@(e => StartTimer(time))>@time.Name</button>
+                    </td>
+                    <td>
+                        <img src="./images/@time.Image" style="height:50px" />
+                    </td>
+                </tr>
+            }
+        </table>
+    </div>
+</div>
+<div class="container" style="display:@timerDisplayStyle;">
+    <div class="row">
+        <div class="col">
             <img src="./images/@CookingImage" style="height:50px" />
         </div>
     </div>
     <div class="row">
-        <div class="col-12">
+        <div class="col">
             @CookingStage
         </div>
     </div>
     <div class="row">
-        <div class="col-12">
-            <CountdownTimer @ref="_timer" IsVisible="@running" />
+        <div class="col">
+            <CountdownTimer @ref="_timer" IsVisible="true" />
         </div>
     </div>
 </div>
@@ -41,27 +47,30 @@
     private string CookingStage;
     private CountdownTimer _timer;
 
-    bool running = false;
+    string buttonDisplayStyle = "initial";
+    string timerDisplayStyle = "none";
 
 
     async void StartTimer(CookTime cookTime)
     {
-        running = true;
-        CookingStage = "raw";
+        buttonDisplayStyle = "none";
+        timerDisplayStyle = "initial";
+
+        CookingStage = $"Cooking {cookTime.Name} (raw)";
         CookingImage = cookTime.Image;
 
         await _timer.Run(cookTime.UndercookedSeconds);
 
-        CookingStage = "undercooked";
+        CookingStage = $"Cooking {cookTime.Name} (partially cooked)";
         StateHasChanged();
         await _timer.Run(cookTime.CookedSeconds - cookTime.UndercookedSeconds);
 
-        CookingStage = "cooked";
+        CookingStage = $"{cookTime.Name} is cooked!";
         StateHasChanged();
         await _timer.Run(cookTime.BurnedSeconds - cookTime.CookedSeconds);
 
-        CookingStage = "burned";
-        running = false;
+        CookingStage = $"{cookTime.Name} is burned!!!";
+        buttonDisplayStyle = "initial";
         StateHasChanged();
     }
 }
