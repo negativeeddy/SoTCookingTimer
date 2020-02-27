@@ -2,71 +2,63 @@
 @page "/hello"
 
 @using SoTCookingTimer.Shared
+<div class="container">
+    @if (!running)
+    {
+        @foreach (var time in CookTime.CookTimes)
+        {
+            <div class="row">
+                <div class="col-sm">
+                    <button @onclick=@(e => StartTimer(time))>@time.Name</button>
+                </div>
+                <div class="col-sm">
+                    <img src="./images/@time.Image" style="height:50px" />
+                </div>
+            </div>
+        }
+    }
 
-@if (!running)
-{
-    <div>
-        <button @onclick=StartFishTimer>Fish</button>
-        <img src="./images/Fish_Ruby_SplashTail.png" style="height:50px" />
+    <div class="row">
+        <div class="col-12">
+            <img src="./images/@CookingImage" style="height:50px" />
+        </div>
     </div>
-    <div>
-        <button @onclick=StartTrophyTimer>Trophy Fish</button>
-        <img src="./images/Fish_Ruby_SplashTail.png" style="height:100px" />
+    <div class="row">
+        <div class="col-12">
+            @CookingStage
+        </div>
     </div>
-    <div>
-        <button @onclick=StartAnimalTimer>Animal Meat</button>
-        <img src="./images/Food_Bacon.png" style="height:100px" />
+    <div class="row">
+        <div class="col-12">
+            <CountdownTimer @ref="_timer" IsVisible="@running" />
+        </div>
     </div>
-    <div>
-        <button @onclick=StartMonsterTimer>Monster Meat</button>
-        <img src="./images/Kraken_Meat.png" style="height:100px" />
-    </div>
-}
-
-<div>@CookingStage</div>
-<CountdownTimer @ref="_timer" IsVisible="@running" />
+</div>
 
 @code
 {
+    private string CookingImage;
     private string CookingStage;
     private CountdownTimer _timer;
 
     bool running = false;
 
-    void StartFishTimer()
-    {
-        StartTimer("normal fish", 30, 40, 80);
-    }
 
-    void StartTrophyTimer()
-    {
-        StartTimer("trophy fish", 80, 90, 180);
-    }
-
-    void StartAnimalTimer()
-    {
-        StartTimer("animal meat", 50, 60, 120);
-    }
-
-    void StartMonsterTimer()
-    {
-        StartTimer("monster meat", 100, 120, 240);
-    }
-
-    async void StartTimer(string title, int rare, int done, int burned)
+    async void StartTimer(CookTime cookTime)
     {
         running = true;
         CookingStage = "raw";
+        CookingImage = cookTime.Image;
 
-        await _timer.Run(rare);
+        await _timer.Run(cookTime.UndercookedSeconds);
 
         CookingStage = "undercooked";
         StateHasChanged();
-        await _timer.Run(done - rare);
+        await _timer.Run(cookTime.CookedSeconds - cookTime.UndercookedSeconds);
 
         CookingStage = "cooked";
         StateHasChanged();
-        await _timer.Run(burned - done);
+        await _timer.Run(cookTime.BurnedSeconds - cookTime.CookedSeconds);
 
         CookingStage = "burned";
         running = false;
