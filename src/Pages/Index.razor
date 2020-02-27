@@ -1,7 +1,7 @@
 ﻿@page "/"
 @page "/hello"
 
-@using SoTCookingBuddy.Shared
+@using SoTCookingTimer.Shared
 
 @if (!running)
 {
@@ -10,7 +10,7 @@
     <button @onclick=StartAnimalTimer>Animal Meat</button>
     <button @onclick=StartMonsterTimer>Monster Meat</button>
 }
-<a href="C:\src\SoTCookingBuddy\Pages\Index.razor">C:\src\SoTCookingBuddy\Pages\Index.razor</a>
+<a href="C:\src\SoTCookingTimer\Pages\Index.razor">C:\src\SoTCookingTimer\Pages\Index.razor</a>
 <div>@CookingStage</div>
 <CountdownTimer @ref="_timer" IsVisible="@running" />
 

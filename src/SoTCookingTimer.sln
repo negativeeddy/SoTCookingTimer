@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.29820.132
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SoTCookingBuddy", "SoTCookingBuddy.csproj", "{17B283C7-F275-47CF-8D77-59EC5B544FED}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SoTCookingTimer", "SoTCookingTimer.csproj", "{17B283C7-F275-47CF-8D77-59EC5B544FED}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
