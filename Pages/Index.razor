@@ -1,0 +1,60 @@
+﻿@page "/"
+@using SoTCookingBuddy.Shared
+
+@if (!running)
+{
+    <button @onclick=StartFishTimer>Fish</button>
+    <button @onclick=StartTrophyTimer>Trophy Fish</button>
+    <button @onclick=StartAnimalTimer>Animal Meat</button>
+    <button @onclick=StartMonsterTimer>Monster Meat</button>
+}
+<div>@CookingStage</div>
+<CountdownTimer @ref="_timer" IsVisible="@running" />
+
+@code
+{
+    private string CookingStage;
+    private CountdownTimer _timer;
+
+    bool running = false;
+
+    void StartFishTimer()
+    {
+        StartTimer("normal fish", 30, 40, 80);
+    }
+
+    void StartTrophyTimer()
+    {
+        StartTimer("trophy fish", 80, 90, 180);
+    }
+
+    void StartAnimalTimer()
+    {
+        StartTimer("animal meat", 50, 60, 120);
+    }
+
+    void StartMonsterTimer()
+    {
+        StartTimer("monster meat", 100, 120, 240);
+    }
+
+    async void StartTimer(string title, int rare, int done, int burned)
+    {
+        running = true;
+        CookingStage = "raw";
+        
+        await _timer.Run(rare);
+
+        CookingStage = "undercooked";
+        StateHasChanged();
+        await _timer.Run(done - rare);
+
+        CookingStage = "cooked";
+        StateHasChanged();
+        await _timer.Run(burned - done);
+
+        CookingStage = "burned";
+        running = false;
+        StateHasChanged();
+    }
+}

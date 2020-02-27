@@ -1,0 +1,40 @@
+﻿@using System.Diagnostics
+
+@if (IsVisible)
+{
+    <div>
+        <progress max="@currentMax" value="@currentSeconds" />
+        @timeLeft.ToString(@"m\:ss\:ff")
+    </div>
+}
+
+@code {
+    [Parameter]
+    public bool IsVisible { get; set; }
+
+    [Parameter]
+    public int TickInterval { get; set; } = 100;
+
+    private int currentMax;
+    private DateTimeOffset finish;
+    public TimeSpan timeLeft = TimeSpan.FromDays(0);
+    private double currentSeconds => currentMax - timeLeft.TotalSeconds;
+
+    public async Task Run(int seconds)
+    {
+        currentMax = seconds;
+
+        timeLeft = TimeSpan.FromSeconds(currentMax);
+        finish = DateTimeOffset.Now + timeLeft;
+        do
+        {
+            var now = DateTimeOffset.Now;
+            timeLeft = finish - now;
+            this.StateHasChanged();
+            await Task.Delay(TickInterval);
+        }
+        while (timeLeft.TotalSeconds > 0);
+
+        timeLeft = TimeSpan.Zero;
+    }
+}
