@@ -1,4 +1,6 @@
 ﻿@page "/"
+@page "/hello"
+
 @using SoTCookingBuddy.Shared
 
 @if (!running)
@@ -8,6 +10,7 @@
     <button @onclick=StartAnimalTimer>Animal Meat</button>
     <button @onclick=StartMonsterTimer>Monster Meat</button>
 }
+<a href="C:\src\SoTCookingBuddy\Pages\Index.razor">C:\src\SoTCookingBuddy\Pages\Index.razor</a>
 <div>@CookingStage</div>
 <CountdownTimer @ref="_timer" IsVisible="@running" />
 
@@ -42,7 +45,7 @@
     {
         running = true;
         CookingStage = "raw";
-        
+
         await _timer.Run(rare);
 
         CookingStage = "undercooked";
