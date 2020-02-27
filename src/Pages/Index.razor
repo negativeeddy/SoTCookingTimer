@@ -12,14 +12,17 @@
         <table style="margin:15px;">
             @foreach (var time in CookTime.CookTimes)
             {
-                <tr>
-                    <td>
-                        <button @onclick=@(e => StartTimer(time))>@time.Name</button>
-                    </td>
-                    <td>
-                        <img src="./images/@time.Image" style="height:50px" />
-                    </td>
-                </tr>
+            <tr>
+                <td>
+                    <button @onclick=@(e => StartTimer(time))>@time.Name</button>
+                </td>
+                <td>
+                    @foreach(var image in time.Images)
+                    {
+                    <img src="./images/@image" style="height:50px" />
+                    }
+                </td>
+            </tr>
             }
         </table>
     </div>
@@ -27,7 +30,10 @@
 <div class="container" style="display:@timerDisplayStyle;">
     <div class="row">
         <div class="col">
-            <img src="./images/@CookingImage" style="height:50px" />
+            @foreach(var image in CookingImages)
+            {
+            <img src="./images/@image" style="height:50px" />
+            }
         </div>
     </div>
     <div class="row">
@@ -49,7 +55,7 @@
 
 @code
 {
-    private string CookingImage;
+    private string[] CookingImages = new string[0];
     private string CookingStage;
     private CountdownTimer _timer;
 
@@ -68,7 +74,7 @@
             cancelDisplayStyle = "initial";
 
             CookingStage = $"Cooking {cookTime.Name} (raw)";
-            CookingImage = cookTime.Image;
+            CookingImages = cookTime.Images;
             cts = new CancellationTokenSource();
 
             await _timer.Run(cookTime.UndercookedSeconds, cts.Token);
