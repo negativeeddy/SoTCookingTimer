@@ -30,13 +30,13 @@
         {
             var now = DateTimeOffset.Now;
             timeLeft = finish - now;
-            this.StateHasChanged();
+            StateHasChanged();
             await Task.Delay(TickInterval, token);
             token.ThrowIfCancellationRequested();
         }
         while (timeLeft.TotalSeconds > 0);
 
         timeLeft = TimeSpan.Zero;
-        currentSeconds = 0;
+        StateHasChanged();
     }
 }
