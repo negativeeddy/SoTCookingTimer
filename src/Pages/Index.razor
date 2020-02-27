@@ -5,11 +5,24 @@
 
 @if (!running)
 {
-    <button @onclick=StartFishTimer>Fish</button>
-    <button @onclick=StartTrophyTimer>Trophy Fish</button>
-    <button @onclick=StartAnimalTimer>Animal Meat</button>
-    <button @onclick=StartMonsterTimer>Monster Meat</button>
+    <div>
+        <button @onclick=StartFishTimer>Fish</button>
+        <img src="./images/Fish_Ruby_SplashTail.png" style="height:50px" />
+    </div>
+    <div>
+        <button @onclick=StartTrophyTimer>Trophy Fish</button>
+        <img src="./images/Fish_Ruby_SplashTail.png" style="height:100px" />
+    </div>
+    <div>
+        <button @onclick=StartAnimalTimer>Animal Meat</button>
+        <img src="./images/Food_Bacon.png" style="height:100px" />
+    </div>
+    <div>
+        <button @onclick=StartMonsterTimer>Monster Meat</button>
+        <img src="./images/Kraken_Meat.png" style="height:100px" />
+    </div>
 }
+
 <div>@CookingStage</div>
 <CountdownTimer @ref="_timer" IsVisible="@running" />
 
