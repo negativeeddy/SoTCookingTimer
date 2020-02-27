@@ -20,7 +20,7 @@
     public TimeSpan timeLeft = TimeSpan.FromDays(0);
     private double currentSeconds => currentMax - timeLeft.TotalSeconds;
 
-    public async Task Run(int seconds)
+    public async Task Run(int seconds, System.Threading.CancellationToken token)
     {
         currentMax = seconds;
 
@@ -31,7 +31,8 @@
             var now = DateTimeOffset.Now;
             timeLeft = finish - now;
             this.StateHasChanged();
-            await Task.Delay(TickInterval);
+            await Task.Delay(TickInterval, token);
+            token.ThrowIfCancellationRequested();
         }
         while (timeLeft.TotalSeconds > 0);
 

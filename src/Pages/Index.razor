@@ -2,6 +2,7 @@
 @page "/hello"
 
 @using SoTCookingTimer.Shared
+@using System.Threading
 
 <div class="container" style="display:@buttonDisplayStyle">
     <div class="row">
@@ -39,6 +40,11 @@
             <CountdownTimer @ref="_timer" IsVisible="true" />
         </div>
     </div>
+    <div class="row" style="display:@cancelDisplayStyle">
+        <div class="col">
+            <button @onclick="CancelTimer">Cancel</button>
+        </div>
+    </div>
 </div>
 
 @code
@@ -49,28 +55,48 @@
 
     string buttonDisplayStyle = "initial";
     string timerDisplayStyle = "none";
+    string cancelDisplayStyle = "initial";
 
+    CancellationTokenSource cts = null;
 
     async void StartTimer(CookTime cookTime)
     {
-        buttonDisplayStyle = "none";
-        timerDisplayStyle = "initial";
+        try
+        {
+            buttonDisplayStyle = "none";
+            timerDisplayStyle = "initial";
+            cancelDisplayStyle = "initial";
 
-        CookingStage = $"Cooking {cookTime.Name} (raw)";
-        CookingImage = cookTime.Image;
+            CookingStage = $"Cooking {cookTime.Name} (raw)";
+            CookingImage = cookTime.Image;
+            cts = new CancellationTokenSource();
 
-        await _timer.Run(cookTime.UndercookedSeconds);
+            await _timer.Run(cookTime.UndercookedSeconds, cts.Token);
 
-        CookingStage = $"Cooking {cookTime.Name} (partially cooked)";
-        StateHasChanged();
-        await _timer.Run(cookTime.CookedSeconds - cookTime.UndercookedSeconds);
+            CookingStage = $"Cooking {cookTime.Name} (partially cooked)";
+            StateHasChanged();
+            await _timer.Run(cookTime.CookedSeconds - cookTime.UndercookedSeconds, cts.Token);
 
-        CookingStage = $"{cookTime.Name} is cooked!";
-        StateHasChanged();
-        await _timer.Run(cookTime.BurnedSeconds - cookTime.CookedSeconds);
+            CookingStage = $"{cookTime.Name} is cooked!";
+            StateHasChanged();
+            await _timer.Run(cookTime.BurnedSeconds - cookTime.CookedSeconds, cts.Token);
 
-        CookingStage = $"{cookTime.Name} is burned!!!";
-        buttonDisplayStyle = "initial";
-        StateHasChanged();
+            CookingStage = $"{cookTime.Name} is burned!!!";
+            buttonDisplayStyle = "initial";
+            cancelDisplayStyle = "none";
+            StateHasChanged();
+        }
+        catch (OperationCanceledException)
+        {
+            buttonDisplayStyle = "initial";
+            timerDisplayStyle = "none";
+            cancelDisplayStyle = "initial";
+            StateHasChanged();
+        }
+    }
+
+    void CancelTimer()
+    {
+        cts.Cancel();
     }
 }
