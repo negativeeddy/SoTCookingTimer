@@ -4,11 +4,11 @@
 @using SoTCookingTimer.Shared
 @using System.Threading
 
-<div class="container" style="display:@buttonDisplayStyle">
-    <div class="row">
+<div class="container justify-content-center" style="display:@buttonDisplayStyle">
+    <div class="row justify-content-center">
         <div class="col">Please select the type of food you wish to cook</div>
     </div>
-    <div class="row">
+    <div class="row justify-content-center">
         <table style="margin:15px;">
             @foreach (var time in CookTime.CookTimes)
             {
@@ -27,7 +27,7 @@
         </table>
     </div>
 </div>
-<div class="container" style="display:@timerDisplayStyle;">
+<div class="container justify-content-center" style="display:@timerDisplayStyle;">
     <div class="row">
         <div class="col">
             @foreach(var image in CookingImages)
@@ -41,8 +41,8 @@
             @CookingStage
         </div>
     </div>
-    <div class="row">
-        <div class="col">
+    <div class="row justify-content-start">
+        <div class="col" style="text-align:left">
             <CountdownTimer @ref="_timer" IsVisible="true" />
         </div>
     </div>

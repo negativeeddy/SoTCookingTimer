@@ -1,6 +1,4 @@
-﻿@import url('open-iconic/font/css/open-iconic-bootstrap.min.css');
-
-@font-face {
+﻿@font-face {
     font-family: Windlass;
     font-style: normal;
     font-weight: 400;
@@ -14,7 +12,10 @@ body {
     background-attachment: fixed;
     font-family: Windlass,Georgia,"serif";
     background: #0b1e24 linear-gradient(90deg,#010d0b 0,#0b1e24 25%,#0b1e24 75%,#010d0b) repeat-y;
-    color: #e8e6d1;
+    color: antiquewhite;
+}
+
+top-row {
     text-align: center;
 }
 
@@ -32,11 +33,6 @@ app {
     position: relative;
     display: grid;
 }
-
-.top-row {
-    align-items: center;
-}
-
 
 .content {
     padding-top: 1.1rem;
