@@ -14,12 +14,12 @@
             {
             <tr>
                 <td>
-                    <button @onclick=@(e => StartTimer(time))>@time.Name</button>
+                    <button class="btn-primary" style="width:150px;margin:10px" @onclick=@(e => StartTimer(time))>@time.Name</button>
                 </td>
                 <td>
                     @foreach(var image in time.Images)
                     {
-                    <img src="./images/@image" style="height:50px" />
+                    <img src="./images/@image" style="height:50px;margin-top:10px;margin-bottom:10px" />
                     }
                 </td>
             </tr>
@@ -48,7 +48,7 @@
     </div>
     <div class="row" style="display:@cancelDisplayStyle">
         <div class="col">
-            <button @onclick="CancelTimer">Cancel</button>
+            <button class="btn-danger" @onclick="CancelTimer">Cancel</button>
         </div>
     </div>
 </div>
