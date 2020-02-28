@@ -4,7 +4,7 @@
 @using SoTCookingTimer.Shared
 @using System.Threading
 
-<div class="container justify-content-center" style="display:@buttonDisplayStyle">
+<div class="grid-item" style="display:@buttonDisplayStyle">
     <div class="row justify-content-center">
         <div class="col">Please select the type of food you wish to cook</div>
     </div>
@@ -36,7 +36,7 @@
             }
         </div>
     </div>
-    <div class="row">
+    <div class="row  justify-content-start">
         <div class="col">
             @CookingStage
         </div>
@@ -46,7 +46,7 @@
             <CountdownTimer @ref="_timer" IsVisible="true" />
         </div>
     </div>
-    <div class="row" style="display:@cancelDisplayStyle">
+    <div class="row justify-content-start" style="display:@cancelDisplayStyle">
         <div class="col">
             <button class="btn-danger" @onclick="CancelTimer">Cancel</button>
         </div>
